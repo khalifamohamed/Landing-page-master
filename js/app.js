@@ -29,13 +29,23 @@ const sections = document.querySelectorAll("section");
 
 //Function to check if an element is in viewport or not
 var isInViewport = function (elem) {
-	var distance = elem.getBoundingClientRect();
-	return (
-		distance.top >= 0 &&
-		distance.left >= 0 &&
-		distance.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-		distance.right <= (window.innerWidth || document.documentElement.clientWidth)
-	);
+ var top = elem.offsetTop;
+  var left = elem.offsetLeft;
+  var width = elem.offsetWidth;
+  var height = elem.offsetHeight;
+
+  while(elem.offsetParent) {
+    elem = elem.offsetParent;
+    top += elem.offsetTop;
+    left += elem.offsetLeft;
+  }
+
+  return (
+    top < (window.pageYOffset + window.innerHeight) &&
+    left < (window.pageXOffset + window.innerWidth) &&
+    (top + height) > window.pageYOffset &&
+    (left + width) > window.pageXOffset
+  );
 };
 
 //Function to remove active classes
